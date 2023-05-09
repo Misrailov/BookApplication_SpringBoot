@@ -37,7 +37,7 @@ public class InitDataConfig implements CommandLineRunner{
         List<Locatie> locaties = new ArrayList<>();
         locaties.add(new Locatie(230,300, "Oostende"));
         book1Authors.add(new Auteur("J.R.R." , " Tolkien"));
-        Book book1 = new Book("9788845269707", book1Authors, "The Lord of the Rings", 20.00, 4, locaties);
+        Book book1 = new Book("978-3-16-148410-0", book1Authors, "The Lord of the Rings", 20.00, locaties);
         books.add(book1);
 
         // Create the second book
@@ -45,7 +45,7 @@ public class InitDataConfig implements CommandLineRunner{
         List<Locatie> locaties3 = new ArrayList<>();
         locaties3.add(new Locatie(230,300, "Oostende2"));
         book2Authors.add(new Auteur("Gabriel Garcia ", "Marquez"));
-        Book book2 = new Book("9780241968581", book2Authors, "One Hundred Years of Solitude", 18.99, 5,locaties3);
+        Book book2 = new Book("978-3-16-148410-0", book2Authors, "One Hundred Years of Solitude", 18.9,locaties3);
         books.add(book2);
 
         // Create the third book
@@ -54,8 +54,9 @@ public class InitDataConfig implements CommandLineRunner{
          List<Locatie> locaties2 = new ArrayList<>();
          locaties2.add(new Locatie(230,300, "Oostende2"));
         book3Authors.add(new Auteur("Harpe", "Lee"));
-        Book book3 = new Book("9780446310789", book3Authors, "To Kill a Mockingbird", 9.99, 4,locaties2);
+        Book book3 = new Book("978-3-16-148410-0", book3Authors, "To Kill a Mockingbird", 9.99,locaties2);
         books.add(book3);
+        
         for(Book book: books) {
         	bookRepository.save(book);
         }

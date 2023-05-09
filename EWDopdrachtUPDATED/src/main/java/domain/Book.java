@@ -1,9 +1,12 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.springframework.format.annotation.NumberFormat;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -11,14 +14,24 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
+
 @ToString(exclude = "id")
 public class Book implements Serializable {
 
@@ -28,16 +41,30 @@ public class Book implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ID;
-//	private String ISBNNumber;
+	@jakarta.validation.constraints.Pattern(regexp = "^(978|979)-\\d{1,5}-\\d{1,7}-\\d{1,6}-\\d$", message = "ISBN Number must be the correct pattern")
+	private String ISBNNumber;
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<Auteur> auteurs;
+	private final List<Auteur> auteurs  = new ArrayList<Auteur>(3);
+	@NotEmpty(message = "Name must not be blank.")
 	private String naam;
+	@NotNull
+	@NumberFormat(pattern="#,##0.00")
 	private double aankoopprijs;
-	private int aantalSterren;
+
+	private int aantalSterren = 0;
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Locatie> locaties;
 
-	public Book(String ISBNNummer, List<Auteur> auteurs, String naam, double aankoopprijs, int aantalSterren,List<Locatie> locaties) {
+	public Book(String ISBNNummer, List<Auteur> auteurs, String naam, double aankoopprijs,List<Locatie> locaties) {
+		
+		setISBNNummer(ISBNNummer);
+		setAuteur(auteurs);
+		setNaam(naam);
+		setAankoopprijs(aankoopprijs);
+		setLocaties(locaties);
+	}
+	public Book(String ISBNNummer, String naam, double aankoopprijs, int aantalSterren) {
+		
 		setISBNNummer(ISBNNummer);
 		setAuteur(auteurs);
 		setNaam(naam);
@@ -50,8 +77,8 @@ public class Book implements Serializable {
 //		if(isValidISBN(iSBNNummer))ISBNNumber = iSBNNummer;
 	}
 
-	public void setAuteur(List auteurs) {
-		this.auteurs = auteurs;
+	public void setAuteur(List<Auteur> auteurs) {
+		auteurs.forEach((auteur) ->this.auteurs.add(auteur));
 	}
 
 	public void setNaam(String naam) {
@@ -76,6 +103,11 @@ public class Book implements Serializable {
 	public static boolean isValidISBN(String isbn) {
 		Matcher matcher = ISBN_PATTERN.matcher(isbn);
 		return matcher.matches();
+	}
+
+	public void setId(Long id) {
+		this.ID = id;
+		
 	}
 
 }

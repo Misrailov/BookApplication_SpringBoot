@@ -14,7 +14,7 @@ import lombok.ToString;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @ToString(exclude = "id")
 public class Auteur implements Serializable{
