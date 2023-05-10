@@ -1,6 +1,7 @@
 package com.example.EWDOpdracht;
 
 import java.util.Locale;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -44,9 +45,21 @@ public class BookController {
 		return "/new";
 		
 	}
+	
+	@GetMapping(value ="/{id}")
+	public String showBook(@PathVariable("id") Long id, Model model) {
+		Optional<Book> book = repository.findById(id);
+		System.out.println(book);
+		System.out.println("||||||||||||||||||||||||||||||||||||||||||||____________________________________________");
+		if(book == null) {
+			return "redirect:/book";			
+		}
+		model.addAttribute("book",book.get());
+		return "/bookShow";
+	}
 	@PostMapping(value = "/new")
 	public String create(@Valid Book book, BindingResult result, Model model, Locale locale) {
-		System.out.println(book);
+		
 	    if (result.hasErrors()) {
 	        model.addAttribute("message", new Message("error", messageSource.getMessage("book_save_fail", new Object[]{}, locale)));
 	        return "/new";

@@ -41,7 +41,7 @@ public class Book implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ID;
-	@jakarta.validation.constraints.Pattern(regexp = "^(978|979)-\\d{1,5}-\\d{1,7}-\\d{1,6}-\\d$", message = "ISBN Number must be the correct pattern")
+	@jakarta.validation.constraints.Pattern(regexp = "^(?:ISBN(?:-13)?:?●)?(?=[0-9]{13}$|(?=(?:[0-9]+[-●]){4})[-●0-9]{17}$)97[89][-●]?[0-9]{1,5}[-●]?[0-9]+[-●]?[0-9]+[-●]?[0-9]$", message = "ISBN Number must be the correct pattern")
 	private String ISBNNumber;
 	@OneToMany(cascade = CascadeType.ALL)
 	private final List<Auteur> auteurs  = new ArrayList<Auteur>(3);
@@ -74,7 +74,8 @@ public class Book implements Serializable {
 	}
 
 	public void setISBNNummer(String iSBNNummer) {
-//		if(isValidISBN(iSBNNummer))ISBNNumber = iSBNNummer;
+		if(isValidISBN(iSBNNummer))ISBNNumber = iSBNNummer;
+		else System.out.println("DIDNT MATCH!!!!");
 	}
 
 	public void setAuteur(List<Auteur> auteurs) {
@@ -98,10 +99,11 @@ public class Book implements Serializable {
 	}
 
 	private static final Pattern ISBN_PATTERN = Pattern
-			.compile("^(?:(?=.{17}$)97[89][ -]?(?=.{13}$)\\d{1,3}[ -]?)?(?:\\d[ -]?){9}[\\dx]$");
+			.compile("^(?:ISBN(?:-13)?:?●)?(?=[0-9]{13}$|(?=(?:[0-9]+[-●]){4})[-●0-9]{17}$)97[89][-●]?[0-9]{1,5}[-●]?[0-9]+[-●]?[0-9]+[-●]?[0-9]$");
 
 	public static boolean isValidISBN(String isbn) {
 		Matcher matcher = ISBN_PATTERN.matcher(isbn);
+		
 		return matcher.matches();
 	}
 
