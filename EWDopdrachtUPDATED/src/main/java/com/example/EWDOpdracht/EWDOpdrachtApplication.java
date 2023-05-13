@@ -24,6 +24,8 @@ public class EWDOpdrachtApplication implements WebMvcConfigurer {
 
 		registry.addViewController("/admin");
 		registry.addViewController("/book");
+	    registry.addViewController("/403").setViewName("403");
+
 
 	}
 	

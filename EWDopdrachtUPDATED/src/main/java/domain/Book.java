@@ -2,7 +2,10 @@ package domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,6 +16,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -41,10 +45,10 @@ public class Book implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ID;
-	@jakarta.validation.constraints.Pattern(regexp = "^(?:ISBN(?:-13)?:?●)?(?=[0-9]{13}$|(?=(?:[0-9]+[-●]){4})[-●0-9]{17}$)97[89][-●]?[0-9]{1,5}[-●]?[0-9]+[-●]?[0-9]+[-●]?[0-9]$", message = "ISBN Number must be the correct pattern")
+	
 	private String ISBNNumber;
-	@OneToMany(cascade = CascadeType.ALL)
-	private final List<Auteur> auteurs  = new ArrayList<Auteur>(3);
+	@ManyToMany(cascade = CascadeType.ALL)
+	private final Set<Auteur> auteurs  = new HashSet(3);
 	@NotEmpty(message = "Name must not be blank.")
 	private String naam;
 	@NotNull
@@ -55,35 +59,39 @@ public class Book implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Locatie> locaties;
 
-	public Book(String ISBNNummer, List<Auteur> auteurs, String naam, double aankoopprijs,List<Locatie> locaties) {
+	public Book(String ISBNNumber, Set<Auteur> auteurs, String naam, double aankoopprijs,List<Locatie> locaties) {
 		
-		setISBNNummer(ISBNNummer);
+		setISBNNumber(ISBNNumber);
 		setAuteur(auteurs);
 		setNaam(naam);
 		setAankoopprijs(aankoopprijs);
 		setLocaties(locaties);
 	}
-	public Book(String ISBNNummer, String naam, double aankoopprijs, int aantalSterren) {
+	public Book(String ISBNNumber, String naam, double aankoopprijs, int aantalSterren) {
 		
-		setISBNNummer(ISBNNummer);
-		setAuteur(auteurs);
+		setISBNNumber(ISBNNumber);
 		setNaam(naam);
 		setAankoopprijs(aankoopprijs);
 		setAantalSterren(aantalSterren);
 		setLocaties(locaties);
 	}
 
-	public void setISBNNummer(String iSBNNummer) {
-		if(isValidISBN(iSBNNummer))ISBNNumber = iSBNNummer;
-		else System.out.println("DIDNT MATCH!!!!");
+	public void setISBNNumber(String ISBNNumber) {
+		this.ISBNNumber = ISBNNumber;
 	}
 
-	public void setAuteur(List<Auteur> auteurs) {
+	public void setAuteur(Set<Auteur> auteurs) {
 		auteurs.forEach((auteur) ->this.auteurs.add(auteur));
 	}
 
 	public void setNaam(String naam) {
 		this.naam = naam;
+	}
+	public void addAuteur(Auteur auteur) {
+		this.auteurs.add(auteur);
+	}
+	public String getNaam() {
+		return this.naam;
 	}
 
 	public void setAankoopprijs(double aankoopprijs) {
@@ -96,6 +104,9 @@ public class Book implements Serializable {
 
 	public void setLocaties(List<Locatie> locaties) {
 		this.locaties = locaties;
+	}
+	public Set<Auteur>  getAuteurs() {
+		return Collections.unmodifiableSet(auteurs);
 	}
 
 	private static final Pattern ISBN_PATTERN = Pattern

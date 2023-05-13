@@ -1,7 +1,9 @@
 package com.example.EWDOpdracht;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -33,7 +35,7 @@ public class InitDataConfig implements CommandLineRunner{
         List<Book> books = new ArrayList<>();
 
         // Create the first book
-        List<Auteur> book1Authors = new ArrayList<>();
+        Set<Auteur> book1Authors = new HashSet();
         List<Locatie> locaties = new ArrayList<>();
         locaties.add(new Locatie(230,300, "Oostende"));
         book1Authors.add(new Auteur("J.R.R." , " Tolkien"));
@@ -41,7 +43,7 @@ public class InitDataConfig implements CommandLineRunner{
         books.add(book1);
 
         // Create the second book
-        List<Auteur> book2Authors = new ArrayList<>();
+        Set<Auteur> book2Authors = new HashSet();
         List<Locatie> locaties3 = new ArrayList<>();
         locaties3.add(new Locatie(230,300, "Oostende2"));
         book2Authors.add(new Auteur("Gabriel Garcia ", "Marquez"));
@@ -49,7 +51,7 @@ public class InitDataConfig implements CommandLineRunner{
         books.add(book2);
 
         // Create the third book
-        List<Auteur> book3Authors = new ArrayList<>();
+        Set<Auteur> book3Authors = new HashSet<>();
 
          List<Locatie> locaties2 = new ArrayList<>();
          locaties2.add(new Locatie(230,300, "Oostende2"));
