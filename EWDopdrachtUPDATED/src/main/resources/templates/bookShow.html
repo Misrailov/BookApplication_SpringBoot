@@ -2,54 +2,126 @@
 <html xmlns:td="http://www.tdymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Book</title>
+<title th:text="#{Book_Page_Tab_Title}">Book</title>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
 	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
 	crossorigin="anonymous">
 <link rel="stylesheet" th:href="@{/css/bookshow.css}" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
 
 </head>
 <body>
+
 	<section>
+
+
+
 		<div class='air air1'></div>
 		<div class='air air2'></div>
-		<div th:insert="navbar :: navbar"></div>
-
-		<div class='tableDiv'>
-			<h1 class="display-1">Show Book</h1>
-
-			<table
-				class="table  table-sm table-dark table-striped table-bordered">
-				<tr>
-					<td>id</td>
-					<td th:text="${book.ID}"></td>
-				</tr>
-				<tr>
-					<td>ISBN-Number</td>
-					<td th:text="${book.ISBNNumber}"></td>
-				</tr>
-				<tr>
-					<td>Price</td>
-					<td th:text="${book.aankoopprijs}"></td>
-				</tr>
-				<tr>
-					<td>Name</td>
-					<td th:text="${book.naam}"></td>
-				</tr>
-				<tr>
-					<td>Stars</td>
-					<td th:text="${book.aantalSterren}"></td>
-				</tr>
-				<tr>
-					<td>Authors</td>
-					<td
-						th:text="${book.auteurs[0].naam + ' ' + book.auteurs[0].firstname}"></td>
-				</tr>
+		<div th:insert="~{navbar :: navbar}"></div>
 
 
-			</table>
+
+		<h1 class="display-1" th:text="#{Show_Book_Title}"></h1>
+
+		<div
+			class='d-flex p-2 flex-row justify-content-center align-items-center'>
+
+			<div class="p-2">
+				<img th:src="${book.cover}" alt="image" class="bookImage" />
+			</div>
+			<div class="p-2">
+				<table
+					class="table  table-sm table-dark table-striped table-bordered">
+					<tr>
+						<td th:text="#{id_text}"></td>
+						<td th:text="${book.id}"></td>
+					</tr>
+					<tr>
+						<td th:text="#{ISBN_text}"></td>
+						<td th:text="${book.ISBNNumber}"></td>
+					</tr>
+					<tr>
+						<td th:text="#{price_text}"></td>
+
+						<td
+							th:text="${ '€'+ ' ' + #numbers.formatDecimal(book.aankoopprijs, 0, 'POINT', 2, 'COMMA')}"
+							th:if="${book.aankoopprijs >0.1}"></td>
+						<td th:if="${book.aankoopprijs <0.1}">No Price</td>
+					</tr>
+					<tr>
+						<td th:text="#{name_text}"></td>
+						<td th:text="${book.naam}"></td>
+					</tr>
+					<tr>
+						<td th:text="#{stars_text}"></td>
+						<td th:text="${book.aantalSterren}"></td>
+					</tr>
+
+
+					<tr th:each="auteur : ${book.auteurs}">
+						<td th:text="#{authors_text}"></td>
+						<td th:text="${auteur.naam + ' ' + auteur.firstname}"></td>
+
+
+					</tr>
+					<tr th:each="locatie : ${book.locaties}">
+						<td th:text="#{locations_text}"></td>
+						<td
+							th:text="${locatie.plaatsnaam+ ' ' + locatie.plaatscode1 + ' '+locatie.plaatscode2 }"></td>
+
+
+					</tr>
+
+					<tr>
+						<td th:text="#{favourite_text}"></td>
+						<td>
+
+							<form method="post" th:action="@{'/book/' + ${book.id}}"
+								th:object="${book}">
+								<input type="hidden" name="isFavourited"
+									th:value="${isFavourited}" />
+
+								<th:block
+									th:if="${isFavourited == false and maxReached == false}">
+									<button class="btn btn-primary" th:ID="${book.id}"
+										th:object="${book}" th:action="@{/book/favorite/book.id}"
+										onclick="addToFavorites(this)">
+										<span class="fa fa-star" th:if="${isFavourited == false}"></span>
+								</th:block>
+
+								<th:block th:if="${isFavourited == true}">
+									<button class="btn btn-primary" th:ID="${book.id}"
+										th:object="${book}" th:action="@{/book/favorite/book.id}"
+										onclick="addToFavorites(this)">
+										<span class="fa fa-star gold-star"
+											th:if="${isFavourited == true}"></span>
+								</th:block>
+								<th:block
+									th:if="${isFavourited == false and maxReached == true}">
+									<p th:text="${maxReachedText}"></p>
+								</th:block>
+								<!-- Star icon -->
+								</button>
+							</form>
+					</tr>
+
+				</table>
+
+
+			</div>
+			<button th:if="${#strings.containsIgnoreCase(role, 'ADMIN')}"
+				class="btn btn-secondary">
+				<a th:href="@{'/book/update/' + ${book.id}}"
+					class="linkChanged">
+					<span th:text="#{edit}"></span>
+				</a>
+			</button>
+
+
 		</div>
 		<div class='air air3'></div>
 
@@ -57,5 +129,11 @@
 		<div class='air air4'></div>
 	</section>
 
+	<script>
+		function addToFavorites(button) {
+			button.classList.toggle('star-gold'); // Toggle the 'star-gold' class on the button
+
+		}
+	</script>
 </body>
 </html>

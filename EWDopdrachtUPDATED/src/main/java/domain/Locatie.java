@@ -4,53 +4,48 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@Setter
+@ToString
 @EqualsAndHashCode(exclude = "id")
-@ToString(exclude = "id")
 public class Locatie {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long Id;
-	private int plaatscode1;
-	private int plaatscode2;
-	private String plaatsnaam;
-	public Locatie(int plaatscode1, int plaatscode2, String plaatsnaam) {
-		setPlaatscode1(plaatscode1);
-		setPlaatscode2(plaatscode2);
-		setPlaatsnaam(plaatsnaam);
-	}
-	private void setPlaatsnaam(String plaatsnaam) {
-		// TODO Auto-generated method stub
+	private Long id;
+
+	@Min(value = 50, message = "{LocationCodeLessthan50}")
+	@Max(value = 300, message = "{LocationCodeMoreThan300}")
+	private Integer plaatscode1;
 	
-		if (plaatsnaam.matches("^[a-zA-Z]+$"))
-			this.plaatsnaam = plaatsnaam;
-		
+	@Min(value = 50, message = "{LocationCodeLessthan50}")
+	@Max(value = 300, message = "{LocationCodeMoreThan300}")
+	private Integer plaatscode2;
+
+	@Pattern(regexp = "^[a-zA-Z]+$", message = "{PlaceNameOnlyLetters}")
+	private String plaatsnaam;
+
+	public Locatie(int plaatscode1, int plaatscode2, String plaatsnaam) {
+		this.plaatscode1 = plaatscode1;
+		this.plaatscode2 = plaatscode2;
+		this.plaatsnaam = plaatsnaam;
 	}
-	private void setPlaatscode2(int plaatscode2) {
-		// TODO Auto-generated method stub
-		if(plaatscode2 >=50 && plaatscode2 <=300) {
-			if(this.plaatscode1 -plaatscode2 <=50 ||this.plaatscode1 -plaatscode2 >=50 )
-			this.plaatscode2 = plaatscode2;
-		}
-		
-	}
-	private void setPlaatscode1(int plaatscode1) {
-		// TODO Auto-generated method stub
-		if(plaatscode1 >=50 && plaatscode1 <=300) {
-			this.plaatscode1 = plaatscode1;
-		}
-		
+	public void setId(Long id) {
+		this.id =id;
 	}
 
-	
-	
 }
+

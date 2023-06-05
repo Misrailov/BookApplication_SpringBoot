@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{Book_Page_Tab_Title}"></title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<link rel="stylesheet" th:href="@{/css/bookShort.css}" />
+
+</head>
+<body>
+
+
+		<div th:insert="~{navbar :: navbar}"></div>
+
+
+	<div class="container my-5 mb-5" style="height: 75%">
+		<h1 class="display-1 text-center mb-5" th:text="#{Books_Title}"></h1>
+				<div class="d-flex p-2 justify-content-center">
+				<button class = "btn btn-dark"><a class="nav-link " th:href="@{/book}" th:text = "#{Card_Display}"></a></button>
+				</div>
+
+		<table class="table table-dark table-striped mb-5"
+			style="height: 30rem; margin-bottom: 400px">
+			<thead>
+
+				<tr>
+
+					<th th:text="#{id_text}"></th>
+					<th th:text="#{ISBN_text}"></th>
+					<th th:text="#{price_text}"></th>
+					<th th:text="#{name_text}"></th>
+					<th th:text="#{stars_text}"></th>
+
+					<td th:text="#{authors_text}"></td>
+
+
+
+					</th:block>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="book,iter: ${bookList}">
+					<tr>
+						<td><a th:href="|/book/${book.id}|" th:text="${book.id}"></a></td>
+						<td th:text="${book.ISBNNumber}"></td>
+						<td   th:text="${ '€'+ ' ' + #numbers.formatDecimal(book.aankoopprijs, 0, 'POINT', 2, 'COMMA')}" th:if ="${book.aankoopprijs >0.1}"></td>
+						<td  th:if ="${book.aankoopprijs <0.1}">No Price</td>
+						<td th:text="${book.naam}"></td>
+
+						<td th:text="${book.aantalSterren}"></td>
+						<td><th:block th:each="auteur, iterStat : ${book.auteurs}">
+								<hr th:if="${iterStat.count == 2 || iterStat.count == 3}"
+									class="white-hr" />
+								<p th:text="${auteur.naam + ' ' + auteur.firstname }"></p>
+
+							</th:block></td>
+				</th:block>
+			</tbody>
+		</table>
+
+	</div>
+
+
+
+</body>
+</html>

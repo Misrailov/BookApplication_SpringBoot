@@ -1,3 +1,21 @@
+.gold-star {
+  color: gold;
+}
+
+.linkChanged{
+	color: white;
+}
+.linkChanged :hover{
+	color: gold;
+	    text-decoration: underline;
+    text-decoration-color: gold;
+}
+
+
+.bookImage{
+	    width:100%;
+    max-width:200px;
+}
 .container {
 		max-width: 800px;
 		margin: 50px auto;

@@ -2,18 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Login Page</title>
+<title th:text ="#{Login_Page_Tab_Title}"></title>
 <link rel="stylesheet" th:href="@{/css/login.css}" />
+
 </head>
 <body onload='document.loginForm.username.focus();'>
 	<section>
   <div class='air air1'></div>
   <div class='air air2'></div>
-	<h1>Book Application Login</h1>
+	<h1 th:text ="#{Application_Login_Title}"></h1>
 
 	<div id="login-box">
 
-		<h3>Login with Username and Password</h3>
+		<h3 th:text ="#{Login_Page_Title}"></h3>
 
 		<div th:if="${error}" class="error" th:text="${error}"></div>
 
@@ -22,15 +23,15 @@
 		<form action="#" th:action="@{/login}" method="post">
 			<table>
 				<tr>
-					<td>User:</td>
+					<td th:text ="#{User_Title}"></td>
 					<td><input type='text' name='username' value=''></td>
 				</tr>
 				<tr>
-					<td>Password:</td>
+					<td th:text ="#{Password_Title}"></td>
 					<td><input type='password' name='password' /></td>
 				</tr>
 				<tr>
-					<td colspan='2'><button class = "buttonLogin" name="submit" type="submit">Login</button></td>
+					<td colspan='2'><button class = "buttonLogin" name="submit" type="submit" th:text ="#{Login_Title}"></button></td>
 				</tr>
 			</table>
 

@@ -10,8 +10,18 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+
+import service.AuteurService;
+import service.AuteurServiceImpl;
+import service.BookService;
+import service.BookServiceImpl;
+import service.FavouriteService;
+import service.FavouriteServiceImpl;
+import service.LocatieService;
+import service.LocatieServiceImpl;
+import service.UserService;
+import service.UserServiceImpl;
 
 @SpringBootApplication
 @EnableJpaRepositories("repository")
@@ -22,9 +32,13 @@ public class EWDOpdrachtApplication implements WebMvcConfigurer {
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addRedirectViewController("/", "/home");
 
-		registry.addViewController("/admin");
+		registry.addRedirectViewController("/admin", "/home/admin");
 		registry.addViewController("/book");
+		registry.addRedirectViewController("/book/short", "/bookShort");
+		registry.addViewController("/search");
 	    registry.addViewController("/403").setViewName("403");
+	    registry.addViewController("/404").setViewName("404");
+
 
 
 	}
@@ -38,5 +52,27 @@ public class EWDOpdrachtApplication implements WebMvcConfigurer {
 		slr.setDefaultLocale(Locale.ENGLISH);
 		return slr;
 	}
+	@Bean
+	AuteurService auteurService() {
+		return new AuteurServiceImpl();
+	}
+	@Bean
+	BookService bookService() {
+		return new BookServiceImpl();
+	}
+	@Bean
+	FavouriteService favouriteService() {
+		return new FavouriteServiceImpl();
+	}
+	@Bean 
+	UserService userService() {
+		return new UserServiceImpl();
+	}
+	@Bean
+	LocatieService locatieService() {
+		return new LocatieServiceImpl();
+	}
+	
 
 }
+
