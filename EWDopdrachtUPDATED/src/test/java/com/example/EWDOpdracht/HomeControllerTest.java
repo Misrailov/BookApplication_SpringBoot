@@ -148,7 +148,7 @@ public class HomeControllerTest {
 				.param("keyword", "978-3453441064")
 				.param("nameSearch", "false"))
         .andExpect(status().isFound())
-    	.andExpect(redirectedUrl("/book/30"));
+    	.andExpect(redirectedUrl("/book/77"));
     	
     	
 	}

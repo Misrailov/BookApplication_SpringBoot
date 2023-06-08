@@ -299,9 +299,11 @@ public String updateBookForm(Model model, @PathVariable("id") Long id, Principal
 			locatiesToAdd.add(new Locatie(bookForm.getFirstLocationfirstcode(),bookForm.getFirstLocationsecondCode(),bookForm.getFirstLocation()));
 
 		}
-
+		
+		System.out.println(!bookForm.getSecondLocation().isBlank()|| !bookForm.getSecondLocation().isEmpty());
 		if(!bookForm.getSecondLocation().isBlank()||!bookForm.getSecondLocation().isEmpty()) {
 			if(bookForm.getSecondLocationfirstcode() ==null ||bookForm.getSecondLocationsecondCode() ==null) {
+			System.out.println("Hier 2");
 				
 				result.addError(new ObjectError("thirdAuthor", "add the place codes to the second location"));
 
@@ -314,11 +316,13 @@ public String updateBookForm(Model model, @PathVariable("id") Long id, Principal
 
 				
 			}else {
-				if(bookForm.getSecondLocationfirstcode()-bookForm.getSecondLocationsecondCode() <=49 
-						||bookForm.getSecondLocationfirstcode()-bookForm.getSecondLocationsecondCode() >=-49) {
+				System.out.println("Hier 1");
+				if(bookForm.getSecondLocationfirstcode()-bookForm.getSecondLocationsecondCode() >=49 
+						||bookForm.getSecondLocationfirstcode()-bookForm.getSecondLocationsecondCode() <=-49) {
 				Locatie locatie = new Locatie(bookForm.getSecondLocationfirstcode(),bookForm.getSecondLocationsecondCode(),bookForm.getSecondLocation());
 				locatiesToAdd.add(locatie);
 				}else {
+					System.out.println("ERROR Code diff");
 					result.addError(new ObjectError("thirdAuthor", "add the place codes to the second location"));
 
 					model.addAttribute("message4",
@@ -331,6 +335,7 @@ public String updateBookForm(Model model, @PathVariable("id") Long id, Principal
 			}
 			
 		}
+		System.out.println(!bookForm.getThirdLocation().isBlank()|| !bookForm.getThirdLocation().isEmpty());
 		if(!bookForm.getThirdLocation().isBlank()||!bookForm.getThirdLocation().isEmpty()) {
 			if(bookForm.getThirdLocationfirstcode() ==null ||bookForm.getThirdLocationsecondCode() ==null) {
 				result.addError(new ObjectError("thirdAuthor", "add the place codes to the second location"));
@@ -342,8 +347,8 @@ public String updateBookForm(Model model, @PathVariable("id") Long id, Principal
 				ErrorExists = true;
 
 			}else {
-				if(bookForm.getThirdLocationfirstcode()-bookForm.getThirdLocationsecondCode() <=49 
-						||bookForm.getThirdLocationfirstcode()- bookForm.getThirdLocationsecondCode() >=-49) {
+				if(bookForm.getThirdLocationfirstcode()-bookForm.getThirdLocationsecondCode() >=49 
+						||bookForm.getThirdLocationfirstcode()- bookForm.getThirdLocationsecondCode() <=-49) {
 				Locatie locatie = new Locatie(bookForm.getThirdLocationfirstcode(),bookForm.getThirdLocationsecondCode(),bookForm.getThirdLocation());
 				locatiesToAdd.add(locatie);
 			}else {

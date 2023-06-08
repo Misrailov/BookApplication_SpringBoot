@@ -52,6 +52,7 @@ public class EWDOpdrachtApplication implements WebMvcConfigurer {
 		slr.setDefaultLocale(Locale.ENGLISH);
 		return slr;
 	}
+	
 	@Bean
 	AuteurService auteurService() {
 		return new AuteurServiceImpl();

@@ -275,7 +275,7 @@ public class BookControllerTest {
 		book2.setLocaties(locaties2);
 		
 		Mockito.when(restController.getBook(Mockito.anyLong())).thenReturn(book2);
-        mockMvc.perform(get("/book/{id}",1L).with(csrf().asHeader()))
+        mockMvc.perform(get("/book/{id}",62L).with(csrf().asHeader()))
         .andExpect(status().isOk())
         .andExpect(view().name("/bookShow"))
         .andExpect(model().attributeExists("username"))
@@ -297,7 +297,7 @@ public class BookControllerTest {
     @Test
     @Transactional
     public void testAccessUpdatePage() throws Exception {
-        mockMvc.perform(get("/book/update/61"))
+        mockMvc.perform(get("/book/update/62"))
         .andExpect(status().isOk())
         .andExpect(view().name("/change"));
 
